@@ -6,6 +6,10 @@ Use these commands in the terminal:
 
 > Use `npm i express mysql dotenv hbs bcryptjs`.
 
+> Use `npm install cookie-parser`
+
+> Use `npm install jsonwebtoken`
+
 > Use `npm i nodemon --save`.
 
 Finally, open your app’s `package.json` file with a code editor and add the following field inside the scripts object:

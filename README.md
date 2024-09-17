@@ -14,7 +14,7 @@ Finally, open your app’s `package.json` file with a code editor and add the fo
 Change the .env file, to your `database` datas.
 ```
 DATABASE = YOUR DATABASE NAME
-DATABASE_HOST = YOUR HOST (EXAMPLE: LOCALHOST)
+DATABASE_HOST = YOUR HOST
 DATABASE_USER = YOUR USERNAME
 DATABASE_PASSWORD = YOUR PASSWORD
 ```

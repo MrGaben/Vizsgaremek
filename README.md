@@ -1,7 +1,7 @@
 # Vizsgaremek
 2024/2025 Vizsgaremek
 
-# Use these in the terminal:
+Use these in the terminal:
 > Use `npm i` to install node modules
 > Use `npm i express mysql dotenv hbs bcryptjs`
 > Use `npm i nodemon --save`

@@ -18,8 +18,3 @@ DATABASE_HOST = YOUR HOST
 DATABASE_USER = YOUR USERNAME
 DATABASE_PASSWORD = YOUR PASSWORD
 ```
-
-Make a `vizsgaremek` table in your database, and export our database from `./db/DatabasePizza.sql`
-
-If you already done with these steps, then use this command in terminal:
-> Use `node .` or `node app.js` 

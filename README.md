@@ -2,9 +2,9 @@
 2024/2025 Vizsgaremek
 
 Use these in the terminal:
-> Use `npm i` to install node modules
-> Use `npm i express mysql dotenv hbs bcryptjs`
-> Use `npm i nodemon --save`
+> Use `npm i` to install node modules.
+> Use `npm i express mysql dotenv hbs bcryptjs`.
+> Use `npm i nodemon --save`.
 
 Finally, open your app’s `package.json` file with a code editor and add the following field inside the scripts object:
 > `"start": "nodemon app.js"`

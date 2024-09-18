@@ -4,48 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/forgotPass.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-    <title>Jelszó változtatás</title>
-    <style>
-        .back-home {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            color: red;
-            font-size: 2rem;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Document</title>
 </head>
 <body>
     <div class="container" id="container">
-        <a href="/" class="btn btn-light back-home" title="Vissza a kezdőlapra">
-            <i class="bi bi-x"></i>
-        </a>
-        <form action="/auth/changePassword" method="POST">
-            <h1>Jelszó változtatás</h1>
+    
+		<form action="/forgotPass" method="Get">
+			<h1>Jelszó változtatás</h1>
+			<br>
+			<label for="email-lgn" class="form-label">Régi jelszó</label>
+            <input type="password" class="form-control" id="password-lgn" name="oldPass" required>  
+			<label for="password-lgn" class="form-label">Új jelszó</label>
+            <input type="password" class="form-control" id="password-lgn" name="newPass" required>
             <br>
-            <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-            
-            <label for="oldPass" class="form-label">Régi jelszó</label>
-            <input type="password" class="form-control" id="oldPass" name="oldPass" required>
-            
-            <label for="newPass" class="form-label">Új jelszó</label>
-            <input type="password" class="form-control" id="newPass" name="newPass" required>
-            <br>
-            <button type="submit" class="btn btn-success btn-lg">Csere</button>
-        </form>
-        
-        {{#if message}}
-            <p>{{message}}</p>
-            <script>
-                setTimeout(() => {
-                    window.location.href = '/login'; // Irányítsd át a bejelentkező oldalra
-                }, 5000); // 5000 ms = 5 másodperc
-            </script>
-        {{/if}}
+			<button id="newPassChange">Csere</button>
+		</form>
+	
     </div>
 </body>
 </html>

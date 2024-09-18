@@ -10,17 +10,17 @@
     <style>
         .back-home {
             position: absolute;
-            top: 1px;
+            top: 20px;
             right: 20px;
             z-index: 1000;
-            color: red; /* Piros szín */
-            font-size: 30px; 
+            color: red;
+            font-size: 2rem;
         }
     </style>
 </head>
 <body>
     <div class="container" id="container">
-        <a href="/login" class="btn back-home" title="Vissza a kezdőlapra">
+        <a href="/" class="btn btn-light back-home" title="Vissza a kezdőlapra">
             <i class="bi bi-x"></i>
         </a>
         <form action="/auth/changePassword" method="POST">
@@ -40,6 +40,11 @@
         
         {{#if message}}
             <p>{{message}}</p>
+            <script>
+                setTimeout(() => {
+                    window.location.href = '/login'; // Irányítsd át a bejelentkező oldalra
+                }, 5000); // 5000 ms = 5 másodperc
+            </script>
         {{/if}}
     </div>
 </body>

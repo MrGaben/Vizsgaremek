@@ -29,30 +29,22 @@
 	</div>
 	<div class="form-container sign-in-container">
 		<form action="/auth/login" method="POST">
-			<h1>Sign in</h1>
+			<h1>Bejelentkezés</h1>
 			<br>
 			<label for="email-lgn" class="form-label">E-mail</label>
             <input type="email" class="form-control" id="email-lgn" name="email" required>  
-			<label for="password-lgn" class="form-label">Password</label>
+			<label for="password-lgn" class="form-label">jelszó</label>
             <input type="password" class="form-control" id="password-lgn" name="password" required>
             <br>
-            <a href="#">Forgot your password?</a>
-			<button>Sign In</button>
+            <a href="/forgotPass" class=" text-black" style=" color: black; text-decoration:none;">Elfelejtette a jelszavat?</a>
+			<button id="signIn">Bejelentkezés</button>
 		</form>
 	</div>
 	<div class="overlay-container">
 		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-				<h1>Welcome Back!</h1>
-				<p>To keep connected with us please login with your personal info</p>
-                <br>
-				<button class="ghost" id="signIn">Sign In</button>
-			</div>
 			<div class="overlay-panel overlay-right">
-				<h1>Kó pizza!</h1>
-                <br>
-				<p>Milyen finom a pizza</p>
-				<button class="ghost" id="signUp"><a style=" cursor: default; color: white; text-decoration:none;" href="/register">Sign Up</a></button>
+				<h1>Nincs fiókja?</h1>
+				<a href="/register" class=" text-white btn border border-3 border-white rounded-pill w-25 p-3" id="signUp">Regisztrálok</a>
 			</div>
 		</div>
 	</div>

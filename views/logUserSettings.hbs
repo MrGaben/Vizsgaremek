@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   </head>
 </head>
@@ -20,30 +24,90 @@
     </nav>
 
     {{!-- Body --}}
-        <div class="container mt-4">
-            <div class="mt-4 p-5 bg-primary text-white rounded">
-                <h1>User Settings</h1>
-                <p>This project demonstrates how to implement login and register functionalities with Node.js and MySQL.</p>
-            </div>
-            
-            {{#if message}}
-                <div class="alert alert-info">{{message}}</div>
-            {{/if}}
+<div class="container mt-5">
+    <div class="mt-4 p-5 text-grey rounded">
+        <h1 style="text-align: center;">Felhasználói adatok</h1>
+    </div>
+    
+    {{#if message}}
+        <div class="alert alert-info">{{message}}</div>
+    {{/if}}
 
-            <form action="/auth/updateUser" method="POST" class="mt-4">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" required>
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" required>
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-success">Update</button>
-                </div>
-            </form>
+    <form action="/auth/updateUser" method="POST" class="mt-4">
+        <div class="mb-3 d-flex align-items-center">
+            <label for="email" class="form-label me-2">Email</label>
+            <input type="email" class="form-control me-2" id="email" name="email" value="{{user.email}}" disabled required>
+            <button type="button" class="btn btn-link text-muted" onclick="enableField('email')">
+                <i class="bi bi-pencil gray-icon"></i>
+            </button>
         </div>
+        <div class="mb-3 d-flex align-items-center">
+            <label for="name" class="form-label me-2">Name</label>
+            <input type="text" class="form-control me-2" id="name" name="name" value="{{user.name}}" disabled required>
+            <button type="button" class="btn btn-link text-muted" onclick="enableField('name')">
+                <i class="bi bi-pencil gray-icon"></i>
+            </button>
+        </div>
+        <div class="mb-3 d-flex align-items-center">
+            <label for="address" class="form-label me-2">Address</label>
+            <input type="text" class="form-control me-2" id="address" name="address" value="{{user.address}}" disabled required>
+            <button type="button" class="btn btn-link text-muted" onclick="enableField('address')">
+                <i class="bi bi-pencil gray-icon"></i>
+            </button>
+        </div>
+        <div class="mb-3 d-flex align-items-center">
+            <label for="phonenumber" class="form-label me-2">Phone Number</label>
+            <input type="text" class="form-control me-2" id="phonenumber" name="phonenumber" value="{{user.phonenumber}}" disabled required>
+            <button type="button" class="btn btn-link text-muted" onclick="enableField('phonenumber')">
+                <i class="bi bi-pencil gray-icon"></i>
+            </button>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success" style="display: none;" id="submitBtn">Frissítés</button>
+        </div>
+    </form>
+
+    <form method="GET" action="/logout" style="margin-left: 64dvw;">
+        <button type="submit" style="background-color: transparent; border: none;">
+            <i class="fas fa-sign-out-alt" style="color: red; font-size: 24px;"></i>
+        </button>
+    </form>
+
+</div>
+
+
+<script>
+function enableField(fieldId) {
+    const field = document.getElementById(fieldId);
+    field.disabled = false;
+    field.focus();
+    document.getElementById('submitBtn').style.display = 'block'; // Mutassuk meg a submit gombot
+}
+</script>
+
+<style>
+    .form-control {
+        width: 300px; /* Változtasd meg az igényeidnek megfelelően */
+        flex-grow: 1; /* Egyenlő szélesség biztosítása */
+    }
+    .gray-icon {
+        color: gray; /* Szürke ikon szín */
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem; /* Az egyes mezők közötti távolság */
+    }
+    .form-label {
+        width: 120px; /* Rögzített szélesség a címkékhez */
+    }
+    .form-control {
+        flex-grow: 1; /* Kitölti a fennmaradó helyet */
+        margin-right: 10px; /* Távolság a gombtól */
+    }
+</style>
+
 
 </body>
 </html>

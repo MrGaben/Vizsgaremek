@@ -94,10 +94,10 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
-app.get("/forgotPass" , (req, res) => {
+app.get("/forgotPass", (req, res) => {
     if (req.user) return res.redirect('/loggedin');
     res.render("forgotPass");
-})
+});
 
 app.get("/loggedin", (req, res) => {
     if (!req.user) return res.redirect('/login');
@@ -220,6 +220,41 @@ app.post("/auth/updateUser", (req, res) => {
             });
     });
 });
+
+
+// Jelszó frissítése
+app.post("/auth/changePassword", async (req, res) => {
+    const { email, oldPass, newPass } = req.body;
+
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
+        if (error || results.length === 0) {
+            console.log('Error fetching user:', error);
+            return res.render('forgotPass', { message: 'Felhasználó nem található.' });
+        }
+
+        const user = results[0];
+
+        // Ellenőrizzük a régi jelszót
+        const isMatch = await bcrypt.compare(oldPass, user.password);
+        if (!isMatch) {
+            return res.render('forgotPass', { message: 'Régi jelszó helytelen!' });
+        }
+
+        // Hash-eljük az új jelszót
+        const hashedNewPassword = await bcrypt.hash(newPass, 8);
+
+        // Frissítsük az adatbázist
+        db.query('UPDATE users SET password = ? WHERE email = ?', [hashedNewPassword, email], (err) => {
+            if (err) {
+                console.log('Error updating password:', err);
+                return res.render('forgotPass', { message: 'An error occurred while updating the password.' });
+            }
+
+            res.render('forgotPass', { message: 'Jelszó sikeresen megváltoztatva!' });
+        });
+    });
+});
+
 
 app.listen(5000, () => {
     console.log("Server started on port 5000");

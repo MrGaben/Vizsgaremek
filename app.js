@@ -3,9 +3,8 @@ const mysql = require("mysql");
 const path = require("path");
 const dotenv = require('dotenv');
 const bcrypt = require("bcryptjs");
-
 const jwt = require('jsonwebtoken');
-const { jwtSecret } = require('./controller/configController.js'); // Importáld a jwtSecret-et
+const { jwtSecret } = require('./controller/configController.js');
 const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './.env' });
@@ -36,55 +35,75 @@ db.connect((error) => {
     }
 });
 
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
-app.get("/register", (req, res) => {
-    res.render("register");
-});
-
-app.get("/login", (req, res) => {
-    res.render("login");
-});
-
-app.get("/loggedin", (req, res) => {
-    const token = req.cookies.auth_token; // Get the token from cookies
-
-    if (!token) {
-        return res.redirect('/login'); // Redirect to login if no token
-    }
-
-    // Verify the token
-    jwt.verify(token, jwtSecret, (err, decoded) => {
-        if (err) {
-            return res.redirect('/login'); // Redirect to login if token is invalid
-        }
-
-        // Render the logged-in page if token is valid
-        res.render('loggedin');
-    });
-});
-
+// Middleware to check if user is authenticated
 const checkAuth = (req, res, next) => {
     const token = req.cookies.auth_token;
 
     if (!token) {
-        return res.redirect('/login');
+        return next(); // If no token, allow access to public routes
     }
 
     jwt.verify(token, jwtSecret, (err, decoded) => {
         if (err) {
-            return res.redirect('/login'); // Token is invalid or expired
+            return next(); // If token is invalid, allow access to public routes
         }
 
         req.user = decoded;
-        next();
+        res.locals.user = decoded; // Make user available in views
+        return next(); // Continue to the next middleware or route
     });
 };
 
-// Apply middleware to protected routes
-app.use('/loggedin', checkAuth);
+app.use(checkAuth);
+
+// Apply checkAuth middleware to all routes
+
+
+
+// BEJELENTKEZETT OLDALAK
+
+app.get("/", (req, res) => { // EZ NEM BEJELENTKEZETT OLDAL
+    if (req.user) return res.redirect('/logIndex'); // Redirect if authenticated
+    res.render("index");
+});
+
+app.get("/logIndex", (req, res) => {
+    if (!req.user) return res.redirect('/'); // Redirect if authenticated
+    res.render("logIndex");
+});
+
+app.get("/logUserSettings", (req, res) => {
+    if (!req.user) return res.redirect('/login'); // Redirect to login if not authenticated
+
+    console.log(req.user); // Ellenőrizd, hogy a user adatok helyesek-e
+
+    res.render("logUserSettings", {
+        user: {
+            name: req.user.name,
+            email: req.user.email
+        }
+    });
+});
+
+// KIJELENTKEZETT EMBEREK
+
+app.get("/register", (req, res) => {
+    if (req.user) return res.redirect('/loggedin'); // Redirect if authenticated
+    res.render("register");
+});
+
+app.get("/login", (req, res) => {
+    if (req.user) return res.redirect('/loggedin'); // Redirect if authenticated
+    res.render("login");
+});
+
+app.get("/loggedin", (req, res) => {
+    if (!req.user) return res.redirect('/login'); // Redirect to login if not authenticated
+    res.render('loggedin');
+});
+
+
+
 
 app.post("/auth/register", async (req, res) => {
     const { name, email, password, password_confirm, birthdate, address, phonenumber } = req.body;
@@ -108,7 +127,7 @@ app.post("/auth/register", async (req, res) => {
             });
         }
 
-        // Hash the password
+        // Password hashing
         let hashedPassword;
         try {
             hashedPassword = await bcrypt.hash(password, 8);
@@ -167,8 +186,8 @@ app.post("/auth/login", async (req, res) => {
                 });
             }
 
-            // Create and send JWT token with 1 minute expiry
-            const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1m' });
+            // Create a token that lasts for 1 minute
+            const token = jwt.sign({ userId: user.id, name: user.name, email: user.email }, jwtSecret, { expiresIn: '10m' });
             res.cookie('auth_token', token, { httpOnly: true }); // Store token in a cookie
             res.redirect('/loggedin');
         } catch (compareError) {
@@ -205,6 +224,50 @@ app.post("/refresh-token", (req, res) => {
 });
 
 
+// User update
+app.post("/auth/updateUser", (req, res) => {
+    if (!req.user) return res.redirect('/login'); // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+
+    const { name, email } = req.body;
+    const userId = req.user.userId; // A felhasználó azonosítója
+
+    // Frissítjük a felhasználói adatokat az adatbázisban
+    db.query('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, userId], (err, result) => {
+        if (err) {
+            console.log('Error updating user:', err);
+            return res.render('logUserSettings', {
+                message: 'An error occurred. Please try again.',
+                user: { name: req.user.name, email: req.user.email } // Használjuk a régi adatokat
+            });
+        }
+
+        // Új token létrehozása az új adatokkal
+        const newToken = jwt.sign({ userId: userId, name: name, email: email }, jwtSecret, { expiresIn: '10m' });
+        res.cookie('auth_token', newToken, { httpOnly: true }); // A új token tárolása a cookie-ban
+
+        // Az új adatokat is lekérdezzük az adatbázisból
+        db.query('SELECT * FROM users WHERE id = ?', [userId], (err, results) => {
+            if (err) {
+                console.log('Error fetching updated user:', err);
+                return res.render('logUserSettings', {
+                    message: 'An error occurred. Please try again.',
+                    user: { name: req.user.name, email: req.user.email } // Régi adatok hiba esetén
+                });
+            }
+
+            const updatedUser = results[0];
+            res.render('logUserSettings', {
+                message: 'User information updated successfully!',
+                user: { name: updatedUser.name, email: updatedUser.email } // Az új adatok
+            });
+        });
+    });
+});
+
+
+
+
+// A szerver elindult(Elvileg )
 app.listen(5000, () => {
     console.log("Server started on port 5000");
-});
+}); 

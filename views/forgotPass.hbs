@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/forgotPass.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container" id="container">
+    
+		<form action="/forgotPass" method="Get">
+			<h1>Jelszó változtatás</h1>
+			<br>
+			<label for="email-lgn" class="form-label">Régi jelszó</label>
+            <input type="password" class="form-control" id="password-lgn" name="oldPass" required>  
+			<label for="password-lgn" class="form-label">Új jelszó</label>
+            <input type="password" class="form-control" id="password-lgn" name="newPass" required>
+            <br>
+			<button id="newPassChange">Csere</button>
+		</form>
+	
+    </div>
+</body>
+</html>

@@ -5,58 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/register.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   </head>
 </head>
 <body>
     {{!-- Navigation links --}}
-    <nav>
-        <h4>Node MySQL Login</h4>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-        </ul>
-    </nav>
 
-    {{!-- Body --}}
-    <div class="container mt-4">
-        <div class="card" style="width: 18rem;">            
-            <div class="card-header">Register Form</div>    
+<div class="area" >
+    
+            <ul class="circles">
+                <div class="container mt-4 " style="width: 32rem;">
+        <div class="card" style="width: 32rem;" id="bg">            
+            <div class="card-header" style="text-align: center; color:white ">Regisztráció</div>    
             <div class="card-body">
                 <form action="/auth/register" method="POST">
                     <div class="mb-3">
-                        <label for="name-reg" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name-reg" name="name">                        
+                        <input type="text" class="form-control text" id="name-reg" name="name" placeholder="Név">                        
                     </div>
                     <div class="mb-3">
-                        <label for="email-reg" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="email-reg" name="email">                        
+                        <input type="text" class="form-control " id="email-reg" name="email" placeholder="E-mail">                        
                     </div>
                     <div class="mb-3">
-                        <label for="password-reg" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password-reg" name="password">
+                        <input type="password" class="form-control " id="password-reg" name="password" placeholder="Jelszó">
                     </div>
                     <div class="mb-3">
-                        <label for="password-conf-reg" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="password-conf-reg" name="password_confirm">
+
+                        <input type="password" class="form-control text" id="password-conf-reg" name="password_confirm" placeholder="Jelszó megerősítés">
                     </div>
                     <div class="mb-3">
-                        <label for="birthdate-reg" class="form-label">Birthdate</label>
-                        <input type="date" class="form-control" id="password-conf-reg" name="birthdate">
+
+                        <input type="date" class="form-control text" id="password-conf-reg" name="birthdate" placeholder="Születési dátum">
                     </div>
                     <div class="mb-3">
-                        <label for="address-reg" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="password-conf-reg" name="address">
+
+                        <input type="text" class="form-control text" id="password-conf-reg" name="address" placeholder="Cím">
                     </div>
                     <div class="mb-3">
-                        <label for="phonenumber-reg" class="form-label">Phone number</label>
-                        <input type="text" class="form-control" id="password-conf-reg" name="phonenumber">
+
+                        <input type="text" class="form-control text" id="password-conf-reg" name="phonenumber" placeholder="Telefonszám">
                     </div>
 
                     
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" style="margin-left: 38%">Regisztráció</button>
                 </form>
             </div>
         </div>
@@ -65,5 +56,19 @@
             <h4 class="alert alert-danger mt-4">{{message}}</h4>
         {{/if}}
     </div>
+    {{!-- Body --}}
+     <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+    </div>
+    
 </body>
 </html>

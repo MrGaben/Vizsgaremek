@@ -50,7 +50,16 @@ const checkAuth = (req, res, next) => {
 
         req.user = decoded;
         res.locals.user = decoded;
-        return next();
+
+        // Lekérdezzük az admin státuszt
+        db.query('SELECT admin FROM users WHERE id = ?', [decoded.userId], (err, result) => {
+            if (err || result.length === 0) {
+                req.user.isAdmin = false; // Ha hiba van, alapértelmezett legyen false
+            } else {
+                req.user.isAdmin = result[0].admin === 1; // Ellenőrizd, hogy admin-e
+            }
+            return next();
+        });
     });
 };
 
@@ -67,13 +76,24 @@ app.get("/logIndex", (req, res) => {
 app.get("/logUserSettings", (req, res) => {
     if (!req.user) return res.redirect('/login');
 
-    res.render("logUserSettings", {
-        user: {
-            name: req.user.name,
-            email: req.user.email,
-            address: req.user.address,
-            phonenumber: req.user.phonenumber 
+    // Lekérdezzük az admin státuszt
+    db.query('SELECT admin FROM users WHERE id = ?', [req.user.userId], (err, result) => {
+        if (err || result.length === 0) {
+            console.log('Error fetching admin status:', err);
+            return res.redirect('/login');
         }
+
+        const isAdmin = result[0].admin === 1; // Ellenőrizd, hogy admin-e
+
+        res.render("logUserSettings", {
+            user: {
+                name: req.user.name,
+                email: req.user.email,
+                address: req.user.address,
+                phonenumber: req.user.phonenumber,
+                isAdmin: isAdmin // Küldd el az admin státuszt
+            }
+        });
     });
 });
 
@@ -85,17 +105,17 @@ app.get("/", (req, res) => {
 
 
 app.get("/register", (req, res) => {
-    if (req.user) return res.redirect('/loggedin');
+    if (req.user) return res.redirect('/logIndex');
     res.render("register");
 });
 
 app.get("/login", (req, res) => {
-    if (req.user) return res.redirect('/loggedin');
+    if (req.user) return res.redirect('/logIndex');
     res.render("login");
 });
 
 app.get("/forgotPass", (req, res) => {
-    if (req.user) return res.redirect('/loggedin');
+    if (req.user) return res.redirect('/logIndex');
     res.render("forgotPass");
 });
 
@@ -164,7 +184,7 @@ app.post("/auth/login", async (req, res) => {
 
             const token = jwt.sign({ userId: user.id, name: user.name, email: user.email, address: user.address, phonenumber: user.phonenumber }, jwtSecret, { expiresIn: '10m' });
             res.cookie('auth_token', token, { httpOnly: true });
-            res.redirect('/loggedin');
+            res.redirect('/logIndex');
         } catch (compareError) {
             console.log('Error comparing password:', compareError);
             return res.render('login', { message: 'An error occurred while processing your request.' });

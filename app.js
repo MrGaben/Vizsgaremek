@@ -99,7 +99,9 @@ app.get("/logUserSettings", (req, res) => {
 
 
 app.get("/", (req, res) => {
+    if (!req.user) return res.redirect('/login');
     if (req.user) return res.redirect('/logIndex');
+    
     res.render("index");
 });
 

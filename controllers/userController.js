@@ -65,3 +65,38 @@ exports.updateUser = (req, res) => {
             });
     });
 };
+
+
+exports.getAllUsers = (req, res) => {
+    if (!req.user || !req.user.isAdmin) return res.redirect('/login');
+
+    db.query('SELECT * FROM users', (err, results) => {
+        if (err) {
+            console.log('Error fetching users:', err);
+            return res.render('admin', { message: 'An error occurred while fetching users.' });
+        }
+        res.render('admin', { users: results });
+    });
+};
+
+
+exports.toggleRole = (req, res) => {
+    const userId = req.body.userId;
+    const currentRole = parseInt(req.body.admin); // Az admin státusz lekérése
+    let newRole;
+
+    console.log(`Toggling role for userId: ${userId}, current role: ${currentRole}`);
+
+    // Rangok váltása
+    newRole = currentRole === 0 ? 2 : 0; // User <-> Alkalmazott
+
+    // Frissítés az adatbázisban
+    db.query('UPDATE users SET admin = ? WHERE id = ?', [newRole, userId], (err) => {
+        if (err) {
+            console.log('Error updating role status:', err);
+            return res.redirect('/admin');
+        }
+        console.log(`Successfully updated userId: ${userId} to new role: ${newRole}`);
+        res.redirect('/admin');
+    });
+};

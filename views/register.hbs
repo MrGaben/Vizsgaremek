@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/register.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  </head>
+</head>
+<body>
+    {{!-- Navigation links --}}
+
+<div class="area" >
+    
+            <ul class="circles">
+                <div class="container mt-4 " style="width: 32rem;">
+        <div class="card" style="width: 32rem;" id="bg">            
+            <div class="card-header" style="text-align: center; color:white ">Regisztráció</div>    
+            <div class="card-body">
+                <form action="/auth/register" method="POST">
+                    <div class="mb-3">
+                        <input type="text" class="form-control text" id="name-reg" name="name" placeholder="Név">                        
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control " id="email-reg" name="email" placeholder="E-mail">                        
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control " id="password-reg" name="password" placeholder="Jelszó">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="password" class="form-control text" id="password-conf-reg" name="password_confirm" placeholder="Jelszó megerősítés">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="date" class="form-control text" id="password-conf-reg" name="birthdate" placeholder="Születési dátum">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="text" class="form-control text" id="password-conf-reg" name="address" placeholder="Cím">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="text" class="form-control text" id="password-conf-reg" name="phonenumber" placeholder="Telefonszám">
+                    </div>
+
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-left: 38%">Regisztráció</button>
+                </form>
+            </div>
+        </div>
+
+        {{#if message }}
+            <h4 class="alert alert-danger mt-4">{{message}}</h4>
+        {{/if}}
+    </div>
+    {{!-- Body --}}
+     <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+    </div>
+    
+</body>
+</html>
